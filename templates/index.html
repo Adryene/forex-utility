@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currency Exchange Rates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #248e38;
+        }
+        
+        h1, h2, h3 {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffff;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 400px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #afd91a;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        select {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4caf50;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Currency Exchange Rates ({{base}})</h1>
+    <h2>Date {{ date }}</h2>
+    <h3>
+        <form action="/" method="POST">
+            <select name="base_currency">
+                <option value="USD">USD - United States Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+                <option value="BGN">BGN - Bulgarian Lev</option>
+                <option value="CZK">CZK - Czech Koruna</option>
+                <option value="DKK">DKK - Danish Krone</option>
+                <option value="GBP">GBP - British Pound Sterling</option>
+                <option value="HUF">HUF - Hungarian Forint</option>
+                <option value="PLN">PLN - Polish Złoty</option>
+                <option value="RON">RON - Romanian Leu</option>
+                <option value="SEK">SEK - Swedish Krona</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+                <option value="ISK">ISK - Icelandic Króna</option>
+                <option value="NOK">NOK - Norwegian Krone</option>
+                <option value="TRY">TRY - Turkish Lira</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="BRL">BRL - Brazilian Real</option>
+                <option value="CAD">CAD - Canadian Dollar</option>
+                <option value="CNY">CNY - Chinese Yuan</option>
+                <option value="HKD">HKD - Hong Kong Dollar</option>
+                <option value="IDR">IDR - Indonesian Rupiah</option>
+                <option value="ILS">ILS - Israeli New Shekel</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="KRW">KRW - South Korean Won</option>
+                <option value="MXN">MXN - Mexican Peso</option>
+                <option value="MYR">MYR - Malaysian Ringgit</option>
+                <option value="NZD">NZD - New Zealand Dollar</option>
+                <option value="PHP">PHP - Philippine Peso</option>
+                <option value="SGD">SGD - Singapore Dollar</option>
+                <option value="THB">THB - Thai Baht</option>
+                <option value="ZAR">ZAR - South African Rand</option>
+                
+            </select>
+            <button type="submit">Change Base Currency</button>
+        </form>
+    </h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th>Symbol</th>
+                <th>Rate</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for currency, rate in exchange_rates.items() %}
+            <tr>
+                <td>{{ currency }}</td>
+                <td>{{ symbols[currency] }}</td>
+                <td>
+                    <span id="rate{{ loop.index }}">{{ rate }}</span>
+                </td>
+                <td><button onclick='copyRate({{ loop.index }})'>Copy</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function copyRate(index) {
+            var rateElement = document.getElementById("rate" + index);
+            var rate = rateElement.innerText;
+
+            navigator.clipboard.writeText(rate)
+                .then(function() {
+                    alert("Rate copied to clipboard: " + rate);
+                })
+                .catch(function(error) {
+                    console.error("Failed to copy rate: ", error);
+                });
+        }
+    </script>
+</body>
+</html>
